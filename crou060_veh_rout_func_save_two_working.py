@@ -194,11 +194,11 @@ def generate_cuts(prob, sol):
             start = not_connected.pop()
 
             # Find a subtour from that node
-            tNodes, tArcs = get_subtour(nodes, vehArcs, start)
-            # tNodes, tArcs = get_subtour(nodes, vehArcs, nodes[0])
+            # tNodes, tArcs = get_subtour(nodes, vehArcs, start)
+            tNodes, tArcs = get_subtour(nodes, vehArcs, nodes[0])
 
             # If it is a subtour (and not a complete tour), add a subtour elimination constraint
-            if len(tNodes) == len(tArcs) and len(tNodes) < len(nodes) and ('O' not in tNodes):
+            if len(tNodes) == len(tArcs) and len(tNodes) < len(nodes):
                 cons_added += 1
 
                 #   If a subtour is found then that
@@ -235,9 +235,11 @@ def generate_cuts(prob, sol):
 # User callback for checking feasibility
 def is_solution_feasible(prob, sol, tol):
 
-    # assignments = get_assignments(prob, sol, tol)
-    # prob.vrp.setSolution(assignments, tol)
-    # prob.vrp.displaySolution(title="Feasibility Check", showProb=None)
+    # # # # # # # # # # # Display the current node solution
+    assignments = get_assignments(prob, sol, tol)
+    prob.vrp.setSolution(assignments, tol)
+    prob.vrp.displaySolution(title="Feasibility Check", showProb=None)
+    # # # # # # # # # # #
 
     # Get the threshold for whether an arc should be considered
     # as part of the solution (almost = 1 by default)

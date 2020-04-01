@@ -194,11 +194,11 @@ def generate_cuts(prob, sol):
             start = not_connected.pop()
 
             # Find a subtour from that node
-            tNodes, tArcs = get_subtour(nodes, vehArcs, start)
-            # tNodes, tArcs = get_subtour(nodes, vehArcs, nodes[0])
+            # tNodes, tArcs = get_subtour(nodes, vehArcs, start)
+            tNodes, tArcs = get_subtour(nodes, vehArcs, nodes[0])
 
             # If it is a subtour (and not a complete tour), add a subtour elimination constraint
-            if len(tNodes) == len(tArcs) and len(tNodes) < len(nodes) and ('O' not in tNodes):
+            if len(tNodes) == len(tArcs) and len(tNodes) < len(nodes):
                 cons_added += 1
 
                 #   If a subtour is found then that
@@ -235,9 +235,11 @@ def generate_cuts(prob, sol):
 # User callback for checking feasibility
 def is_solution_feasible(prob, sol, tol):
 
-    # assignments = get_assignments(prob, sol, tol)
-    # prob.vrp.setSolution(assignments, tol)
-    # prob.vrp.displaySolution(title="Feasibility Check", showProb=None)
+    # # # # # # # # # # # Display the current node solution
+    assignments = get_assignments(prob, sol, tol)
+    prob.vrp.setSolution(assignments, tol)
+    prob.vrp.displaySolution(title="Feasibility Check", showProb=None)
+    # # # # # # # # # # #
 
     # Get the threshold for whether an arc should be considered
     # as part of the solution (almost = 1 by default)
@@ -261,26 +263,14 @@ def is_solution_feasible(prob, sol, tol):
         # Extract the arcs for each vehicle to pass into get_subtour()
         vehArcs = [x[:2] for x in arcs if x[2] == k]
 
-        # Define the set of nodes that have not been put in a connected component
-        not_connected = set(nodes[:])
+        # Look for subtour in each vehicles graph from the first node
+        # tNodes, tArcs = get_subtour(nodes, vehArcs, start)                        # Introduce the while not connected ####
+        tNodes, tArcs = get_subtour(nodes, vehArcs, nodes[0])
 
-        # While any nodes are not in a connected component
-        while not_connected:
-
-            # Get an unconnected node
-            start = not_connected.pop()
-
-            # Find a subtour from that node
-            tNodes, tArcs = get_subtour(nodes, vehArcs, start)
-            # tNodes, tArcs = get_subtour(nodes, vehArcs, nodes[0])
-
-            #   If a subtour is found then the solution is not feasible, so will declare it as such
-            if (len(tNodes) == len(tArcs)) and (len(tNodes) < len(nodes)) and ('O' not in tNodes):
-                print("Solution has subtours!")
-                return False
-
-            # Remove the subtour nodes as they are now connected
-            not_connected -= set(tNodes)
+        #   If a subtour is found then the solution is not feasible, so will declare it as such
+        if (len(tNodes) == len(tArcs)) and (len(tNodes) < len(nodes)):
+            print("Solution has subtours!")
+            return False
 
     # Otherwise it is feasible
     print("Solution has no subtours!")
