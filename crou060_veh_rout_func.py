@@ -15,8 +15,8 @@ myopts = {
 # Formulate the IP and necessary constraints
 def formulate(vrp, options={}):
     prob = dippy.DipProblem("VRP",
-                            # display_mode='matplotlib',
-                            display_mode='none',
+                            display_mode='matplotlib',
+                            # display_mode='none',
                             display_interval=10)
 
     assign_vars = LpVariable.dicts("y",

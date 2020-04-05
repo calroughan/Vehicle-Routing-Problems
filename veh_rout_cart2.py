@@ -1,6 +1,6 @@
 from random import random, seed
 
-seed(6174)
+seed(1)
 
 from veh_rout_prob import VRProb
 from crou060_veh_rout_func import myopts, formulate, solve_and_display, get_assignments

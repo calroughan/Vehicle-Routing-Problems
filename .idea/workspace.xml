@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a548857-e1e8-4c4a-812b-c3c42d95fe80" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/761VR_New.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/761VR_New.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crou060_veh_rout_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/crou060_veh_rout_func.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crou060_veh_rout_func_save.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/crou060_veh_rout_func_save_two_working.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/crou060_veh_rout_func_works.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/veh_rout_cart1.py" beforeDir="false" afterPath="$PROJECT_DIR$/veh_rout_cart1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/veh_rout_cart2.py" beforeDir="false" afterPath="$PROJECT_DIR$/veh_rout_cart2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/veh_rout_cart3.py" beforeDir="false" afterPath="$PROJECT_DIR$/veh_rout_cart3.py" afterDir="false" />
@@ -43,7 +37,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.summarise">
+  <component name="RunManager" selected="Python.veh_rout_cart3">
     <configuration name="summarise" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="761VR_New" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -130,10 +124,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.summarise" />
-        <item itemvalue="Python.veh_rout_cart1" />
         <item itemvalue="Python.veh_rout_cart3" />
         <item itemvalue="Python.veh_rout_cart2" />
+        <item itemvalue="Python.veh_rout_cart1" />
+        <item itemvalue="Python.summarise" />
       </list>
     </recent_temporary>
   </component>
