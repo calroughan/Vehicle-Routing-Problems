@@ -12,9 +12,11 @@ myopts = {
 }
 
 
+# Formulate the IP and necessary constraints
 def formulate(vrp, options={}):
     prob = dippy.DipProblem("VRP",
-                            display_mode='matplotlib',
+                            # display_mode='matplotlib',
+                            display_mode='none',
                             display_interval=10)
 
     assign_vars = LpVariable.dicts("y",
@@ -25,7 +27,7 @@ def formulate(vrp, options={}):
                                    cat=LpBinary)
     use_vars = LpVariable.dicts("x", vrp.VEHS, cat=LpBinary)
 
-    # Objective function
+    # Objective function: minimise the distance between nodes * whether that arc is used by any vehicle.
     prob += lpSum(vrp.dist[i, j] * assign_vars[i, j, k]
                   for i in vrp.EXTLOCS
                   for j in vrp.EXTLOCS
@@ -48,6 +50,8 @@ def formulate(vrp, options={}):
 
     for k in vrp.VEHS:
         # Conservation of flows
+        # If an arc enters a certain node j from any other node, then there must be
+        # an arc leaving j to any other node.
         for j in vrp.LOCS:
             prob += lpSum(assign_vars[i_1, j, k]
                           for i_1 in vrp.EXTLOCS
@@ -55,7 +59,9 @@ def formulate(vrp, options={}):
                                                 for i_2 in vrp.EXTLOCS
                                                 if i_2 != j)
 
+        # If all ncurr vehicles specified in the veh_rout_cart[i].py are to be used
         if vrp.allused:
+
             # Specify that all vehicles must enter the depot
             prob += lpSum(assign_vars[i, 'O', k]
                           for i in vrp.LOCS) == 1
@@ -63,22 +69,29 @@ def formulate(vrp, options={}):
             # Specify all vehicles must leave the depot
             prob += lpSum(assign_vars['O', j, k]
                           for j in vrp.LOCS) == 1
+
         else:
+
+            # Strangely returns better solutions without this?
             # Specify that if a vehicle is used it must enter the depot
-            prob += lpSum(assign_vars[i, 'O', k]
-                          for i in vrp.LOCS) == use_vars[k]
+            # prob += lpSum(assign_vars[i, 'O', k]
+            #               for i in vrp.LOCS) == use_vars[k]
 
             # Specify that if a vehicle is used it must leave the depot
             prob += lpSum(assign_vars['O', j, k]
                           for j in vrp.LOCS) == use_vars[k]
 
+        # Condition for checking if the route taken by each vehicle does not exceed the allowed maximum
+        # journey distance
         if vrp.distcap is not None:
+
             # For each vehicle k, ensure that the maximum distance travelled is less than the distance
             # capacity and 0 if that vehicle is not used.
             prob += lpSum(vrp.dist[i, j] * assign_vars[i, j, k]
                           for i in vrp.EXTLOCS
                           for j in vrp.EXTLOCS
                           if i != j) <= vrp.distcap * use_vars[k]
+
         else:
             # Cardinality of arcs for vehicles in use
             prob += lpSum(assign_vars[i, j, k]
@@ -145,13 +158,13 @@ def solve_and_display(prob, options={}):
         print("Dippy could not find and optimal solution")
 
     # Draw the final B-&-B tree if it is being displayed
-    if prob.display_mode != 'off':
-        tree_nodes = prob.Tree.get_node_list()
-        numNodes = len(tree_nodes)
-        print("Number of nodes =", numNodes)
-        print("Tree depth =", max(prob.Tree.get_node(n).attr['level'] for n in tree_nodes) - 1)
-        if prob.display_mode in ['pygame', 'xdot', 'matplotlib']:
-            prob.Tree.display(pause=True, wait_for_click=False)
+    # if prob.display_mode != 'off':
+    #     tree_nodes = prob.Tree.get_node_list()
+    #     numNodes = len(tree_nodes)
+    #     print("Number of nodes =", numNodes)
+    #     print("Tree depth =", max(prob.Tree.get_node(n).attr['level'] for n in tree_nodes) - 1)
+    #     if prob.display_mode in ['pygame', 'xdot', 'matplotlib']:
+    #         prob.Tree.display(pause=True, wait_for_click=False)
 
     return xopt
 
@@ -193,16 +206,15 @@ def generate_cuts(prob, sol):
             # Get an unconnected node
             start = not_connected.pop()
 
-            # Find a subtour from that node
+            # Find a subtour from that starting node
             tNodes, tArcs = get_subtour(nodes, vehArcs, start)
-            # tNodes, tArcs = get_subtour(nodes, vehArcs, nodes[0])
 
-            # If it is a subtour (and not a complete tour), add a subtour elimination constraint
+            # If it is a subtour (and not a complete tour), add a subtour elimination constraint provided that
+            # the depot is not included in the subtour,
             if len(tNodes) == len(tArcs) and len(tNodes) < len(nodes) and ('O' not in tNodes):
                 cons_added += 1
 
-                #   If a subtour is found then that
-                #   graph must be banned
+                # If a subtour is found then that graph must be banned
 
                 # Option 1
                 # cons.append(lpSum(assign_vars[i, j, k]
@@ -235,6 +247,7 @@ def generate_cuts(prob, sol):
 # User callback for checking feasibility
 def is_solution_feasible(prob, sol, tol):
 
+    # Display feasibility checks if desired
     # assignments = get_assignments(prob, sol, tol)
     # prob.vrp.setSolution(assignments, tol)
     # prob.vrp.displaySolution(title="Feasibility Check", showProb=None)
