@@ -60,6 +60,7 @@ def run():
         plt.close()
         pdf.savefig(fig3)
 
+    # I split these as my code did not like having so many charts open at once
     prob1 = Problem(5)
     fig1 = prob1.run_problem([1006, 1007, 1008, 1010, 1012, 1013], 3, 2, 'One')
 

@@ -15,8 +15,8 @@ myopts = {
 # Formulate the IP and necessary constraints
 def formulate(vrp, options={}):
     prob = dippy.DipProblem("VRP",
-                            display_mode='matplotlib',
-                            # display_mode='none',
+                            # display_mode='matplotlib',
+                            display_mode='none',
                             display_interval=10)
 
     assign_vars = LpVariable.dicts("y",
@@ -72,8 +72,8 @@ def formulate(vrp, options={}):
 
         else:
 
-            # Strangely returns better solutions without this?
-            # Specify that if a vehicle is used it must enter the depot
+            # # Moved this into the vrp.distcap set of constraints
+            # # Specify that if a vehicle is used it must enter the depot
             # prob += lpSum(assign_vars[i, 'O', k]
             #               for i in vrp.LOCS) == use_vars[k]
 
@@ -93,11 +93,18 @@ def formulate(vrp, options={}):
                           if i != j) <= vrp.distcap * use_vars[k]
 
         else:
+
+            # Strangely returns better solutions with this isolated here. Don't ask me why!
+            # Specify that if a vehicle is used it must enter the depot
+            if not vrp.allused:
+                prob += lpSum(assign_vars[i, 'O', k]
+                              for i in vrp.LOCS) == use_vars[k]
+
             # Cardinality of arcs for vehicles in use
             prob += lpSum(assign_vars[i, j, k]
                           for i in vrp.EXTLOCS
                           for j in vrp.EXTLOCS
-                          if i != j) <= len(vrp.EXTLOCS) * use_vars[k]
+                          if i != j) <= len(vrp.EXTLOCS)  # * use_vars[k]       # Works better without?
 
     # Attach the problem data and variable dictionaries to the DipProblem
     prob.vrp = vrp
