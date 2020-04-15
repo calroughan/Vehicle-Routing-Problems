@@ -60,23 +60,23 @@ def run():
         plt.close()
         pdf.savefig(fig3)
 
-    # I split these as my code did not like having so many charts open at once
-    prob1 = Problem(5)
-    fig1 = prob1.run_problem([1006, 1007, 1008, 1010, 1012, 1013], 3, 2, 'One')
-
-    prob2 = Problem(5, distcap=6)
-    fig2 = prob2.run_problem([1006, 1007, 1008, 1010, 1012, 1013], 3, 2, 'Two')
-
-    prob3 = Problem(3, useall=True)
-    fig3 = prob3.run_problem([1006, 1007, 1008, 1010, 1012, 1013], 3, 2, 'Three')
-
-    with PdfPages('outputB.pdf') as pdf:
-        pdf.savefig(fig1)
-        plt.close()
-        pdf.savefig(fig2)
-        plt.close()
-        pdf.savefig(fig3)
-        plt.close()
+    # # I split these as my code did not like having so many charts open at once
+    # prob1 = Problem(5)
+    # fig1 = prob1.run_problem([1006, 1007, 1008, 1010, 1012, 1013], 3, 2, 'One')
+    #
+    # prob2 = Problem(5, distcap=6)
+    # fig2 = prob2.run_problem([1006, 1007, 1008, 1010, 1012, 1013], 3, 2, 'Two')
+    #
+    # prob3 = Problem(3, useall=True)
+    # fig3 = prob3.run_problem([1006, 1007, 1008, 1010, 1012, 1013], 3, 2, 'Three')
+    #
+    # with PdfPages('outputB.pdf') as pdf:
+    #     pdf.savefig(fig1)
+    #     plt.close()
+    #     pdf.savefig(fig2)
+    #     plt.close()
+    #     pdf.savefig(fig3)
+    #     plt.close()
 
 if __name__ == '__main__':
     run()

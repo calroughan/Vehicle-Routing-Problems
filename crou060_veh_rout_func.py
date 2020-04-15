@@ -94,7 +94,7 @@ def formulate(vrp, options={}):
 
         else:
 
-            # Strangely returns better solutions with this isolated here. Don't ask me why!
+            # Strangely returns better solutions with this isolated here.
             # Specify that if a vehicle is used it must enter the depot
             if not vrp.allused:
                 prob += lpSum(assign_vars[i, 'O', k]
@@ -104,7 +104,7 @@ def formulate(vrp, options={}):
             prob += lpSum(assign_vars[i, j, k]
                           for i in vrp.EXTLOCS
                           for j in vrp.EXTLOCS
-                          if i != j) <= len(vrp.EXTLOCS)  # * use_vars[k]       # Works better without?
+                          if i != j) <= len(vrp.EXTLOCS) * use_vars[k]
 
     # Attach the problem data and variable dictionaries to the DipProblem
     prob.vrp = vrp
@@ -224,17 +224,17 @@ def generate_cuts(prob, sol):
                 # If a subtour is found then that graph must be banned
 
                 # Option 1
-                # cons.append(lpSum(assign_vars[i, j, k]
-                #                   for (i, j) in tArcs) <= len(tArcs) - 1)
+                cons.append(lpSum(assign_vars[i, j, k]
+                                  for (i, j) in tArcs) <= len(tArcs) - 1)
 
                 # Option 2
-                cons.append(lpSum(assign_vars[i, j, k]
-                                  for i in tNodes
-                                  for j in set(nodes).difference(tNodes)) +
-                            lpSum(assign_vars[j, i, k]
-                                  for i in tNodes
-                                  for j in set(nodes).difference(tNodes))
-                            >= 2)
+                # cons.append(lpSum(assign_vars[i, j, k]
+                #                   for i in tNodes
+                #                   for j in set(nodes).difference(tNodes)) +
+                #             lpSum(assign_vars[j, i, k]
+                #                   for i in tNodes
+                #                   for j in set(nodes).difference(tNodes))
+                #             >= 2)
 
                 print("Subtour elimination!", cons[-1])
 

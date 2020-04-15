@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a548857-e1e8-4c4a-812b-c3c42d95fe80" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/outputA_Starting.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PDF outputs/output.pdf" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/crou060_veh_rout_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/crou060_veh_rout_func.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/outputA.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/outputA.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/outputB.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/outputB.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/summarise.py" beforeDir="false" afterPath="$PROJECT_DIR$/summarise.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
